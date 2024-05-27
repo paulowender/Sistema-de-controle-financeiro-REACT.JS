@@ -8,9 +8,18 @@ export const Controller = () => {
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setTransactionsList(service.getAll());
+    setLoading(true);
+    const unsubscribe = service.listen((data) => {
+      setTransactionsList(data);
+      setLoading(false);
+    })
+
+    return () => {
+      unsubscribe();
+    }
   }, [service]);
   
   useEffect(() => {
