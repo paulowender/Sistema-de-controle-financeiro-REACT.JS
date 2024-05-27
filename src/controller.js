@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Transactions } from "./services/transactions";
+import { TransactionService } from "./services/transactions";
    
 export const Controller = () => {
 
-  const [service] = useState(new Transactions());
+  const [service] = useState(new TransactionService());
   const [transactionsList, setTransactionsList] = useState([]);
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);

@@ -30,7 +30,7 @@ export class FirebaseRepository {
    * @param {number} [limit] - The optional limit on the number of documents to retrieve.
    * @return {Promise<void>} - A promise that resolves when the data is retrieved successfully.
    */
-  async getCollection(path, callback, onError, orderByField, order = 'asc', whereClauses, limitValue) {
+  async getCollection(path, callback, onError, orderByField, order, whereClauses, limitValue) {
     if (!path) throw new Error('Path is required');
     if (!callback) throw new Error('Callback is required');
 
@@ -60,7 +60,7 @@ export class FirebaseRepository {
     }
   }
 
-  getDocs = (path, whereClauses, orderByField, order = 'asc', limitValue) => {
+  getDocs = (path, whereClauses, orderByField, order , limitValue) => {
     if (!path) throw new Error('Path is required');
 
     let ref = collection(this.db, path);
@@ -126,7 +126,7 @@ export class FirebaseRepository {
    * @param {number} limit - The maximum number of documents to query from the collection.
    * @return {Function} - The unsubscribe function
    */
-  listenCollection(path, callback, onError, whereClauses, orderByField = 'timestamp', order = 'asc', limitValue) {
+  listenCollection(path, callback, onError, whereClauses, orderByField, order, limitValue) {
     if (!path) throw new Error('Path is required');
     if (!callback) throw new Error('Callback is required');
 

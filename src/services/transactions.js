@@ -1,19 +1,14 @@
 import { keys } from "../constants/keys";
 import { FirebaseRepository } from "./repository";
 
-export class Transactions {
+export class TransactionService {
     constructor() {
         this.collection = keys.transactions;
-        this.transactions = [];
         this.repository = new FirebaseRepository();
     }
 
     listen(onUpdate) {
-        return this.repository.listenCollection(this.collection, (data) => {
-            this.transactions = data;
-
-            onUpdate(this.transactions);
-        });
+        return this.repository.listenCollection(this.collection, onUpdate);
     }
 
     async add(transaction) {
