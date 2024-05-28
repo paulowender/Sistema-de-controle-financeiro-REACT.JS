@@ -1,50 +1,18 @@
-import React from "react";
-import GlobalStyle from "../styles/global";
-import Header from "../components/Header";
-import Resume from "../components/Resume";
-import Form from "../components/Form";
-import { TransactionsProvider } from "../providers/transactions";
-import Dashboard from "./dashboard/Dashboard";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Dashboard from './dashboard/Dashboard';
+import Modules from '../constants/modules';
 
-const App = () => {
-
-  const controller = TransactionsProvider();
-
-  const {
-    income,
-    expense,
-    total,
-    handleAdd,
-    transactionsList,
-    setTransactionsList,
-    onDelete,
-    loading
-  } = controller;
-
-  if (!loading) {
-    return <Dashboard />
-    // return (
-    //   <>
-    //   <Header />
-    //   <Loading />
-    //   <GlobalStyle />
-    // </>
-    // )
-  }
-
+function App() {
   return (
-    <>
-      <Header />
-      <Resume income={income} expense={expense} total={total} />
-      <Form
-        handleAdd={handleAdd}
-        transactionsList={transactionsList}
-        setTransactionsList={setTransactionsList}
-        onDelete={onDelete}
-      />
-      <GlobalStyle />
-    </>
+    <div>
+      <Routes>
+        {Modules.map((module, index) => (
+          <Route key={index} path={module.path} element={<module.component />} />
+        ))}
+      </Routes>
+    </div>
   );
-};
+}
 
 export default App;

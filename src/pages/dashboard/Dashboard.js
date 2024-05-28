@@ -13,7 +13,6 @@ import MuiDrawer from '@mui/material/Drawer';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
-import List from '@mui/material/List';
 import Paper from '@mui/material/Paper';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
@@ -25,8 +24,8 @@ import { TransactionsProvider } from '../../providers/transactions';
 import { themeDark, themeLight } from '../../styles/theme';
 import Cash from './Cash';
 import Chart from './Chart';
+import AppDrawer from './components/drawer';
 import Form from './Form';
-import { mainListItems, secondaryListItems } from './listItems';
 import TransactionsList from './Transactions';
 
 function Copyright(props) {
@@ -173,11 +172,12 @@ export default function Dashboard() {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">
+          <AppDrawer />
+          {/* <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
-          </List>
+          </List> */}
         </Drawer>
         <Box
           component="main"
