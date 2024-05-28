@@ -1,3 +1,4 @@
+import { DarkModeOutlined, LightModeOutlined } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -87,9 +88,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-// TODO remove, this demo shouldn't need to reset the theme.
-// const defaultTheme = createTheme();
-
 export default function Dashboard() {
 
   const {
@@ -152,7 +150,10 @@ export default function Dashboard() {
               {tr('dashboard')}
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              {darkMode ? <DarkModeOutlined onClick={toggleTheme} /> : <LightModeOutlined onClick={toggleTheme} />}
+            </IconButton>
+            <IconButton color="inherit">
+              <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
