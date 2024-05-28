@@ -25,11 +25,11 @@ export const TransactionsProvider = () => {
 
   useEffect(() => {
     const amountExpense = transactions
-      .filter((item) => item.expense)
+      .filter(({ expense, pending }) => expense && !pending)
       .map((transaction) => Number(transaction.amount));
 
     const amountIncome = transactions
-      .filter((item) => !item.expense)
+      .filter(({ expense, pending }) => !expense && !pending)
       .map((transaction) => Number(transaction.amount));
 
     const expense = amountExpense.reduce((acc, cur) => acc + cur, 0).toFixed(2);
@@ -37,13 +37,12 @@ export const TransactionsProvider = () => {
 
     const cash = Math.abs(income - expense).toFixed(2);
 
-    setIncome(`R$ ${income}`);
-    setExpense(`R$ ${expense}`);
-    setCash(`${Number(income) < Number(expense) ? "-" : ""}R$ ${cash}`);
+    setIncome(`${tr("currencySymbol")} ${income}`);
+    setExpense(`${tr("currencySymbol")} ${expense}`);
+    setCash(`${Number(income) < Number(expense) ? "-" : ""}${tr("currencySymbol")} ${cash}`);
   }, [transactions]);
 
   const handleAdd = (transaction) => {
-    console.log(transaction);
     service.add(transaction);
   };
 
@@ -83,6 +82,13 @@ export const TransactionsProvider = () => {
       type: 'checkbox',
       label: tr('isExpense'),
       name: 'expense',
+      value: false
+    },
+    {
+      id: 'pending',
+      type: 'checkbox',
+      label: tr('pending'),
+      name: 'pending',
       value: false
     }
   ]
