@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
-import App from "./App";
+// import App from "./pages";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 const root = createRoot(document.getElementById("root"));
 
-root.render(<App />);
+root.render(<Dashboard />);

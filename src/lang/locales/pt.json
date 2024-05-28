@@ -1,13 +1,20 @@
 {
+    "actions": "Ações",
     "add": "Adicionar",
     "balance": "Saldo",
     "category": "Categoria",
+    "currency": "Real",
+    "currencySymbol": "R$",
     "date": "Data",
+    "dashboard": "Visão geral",
     "description": "Descricão",
     "language": "Português",
     "recent": "Lançamentos recentes",
-    "total": "Total",
+    "showAll": "Mostrar tudo",
+    "cash": "Saldo",
     "transactions": "Transações",
-    "value": "Valor",
-    "showAll": "Mostrar tudo"
+    "type": "Tipo",
+    "isExpense": "Despesa",
+    "isIncome": "Receita",
+    "amount": "Valor"
 }

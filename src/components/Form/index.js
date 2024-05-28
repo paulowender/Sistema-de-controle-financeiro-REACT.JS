@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "../Grid";
 import * as C from "./styles";
 
-const Form = ({ handleAdd, transactionsList, setTransactionsList, onDelete }) => {
+const Form = ({ handleAdd, onDelete }) => {
   const [desc, setDesc] = useState("");
   const [amount, setAmount] = useState("");
   const [isExpense, setExpense] = useState(false);
@@ -62,7 +62,6 @@ const Form = ({ handleAdd, transactionsList, setTransactionsList, onDelete }) =>
         </C.RadioGroup>
         <C.Button onClick={handleSave}>ADICIONAR</C.Button>
       </C.Container>
-      <Grid itens={transactionsList} setItens={setTransactionsList} onDelete={onDelete} />
     </>
   );
 };

@@ -1,13 +1,20 @@
 {
+    "actions": "Actions",
     "add": "Add",
     "balance": "Balance",
     "category": "Category",
+    "currency": "Dollar",
+    "currencySymbol": "$",
+    "dashboard": "Dashboard",
     "date": "Date",
     "description": "Description",
     "language": "English",
     "recent": "Recent transactions",
-    "total": "Total",
+    "showAll": "Show all",
+    "cash": "Cash",
     "transactions": "Transactions",
-    "value": "Amount",
-    "showAll": "Show all"
+    "type": "Type",
+    "isExpense": "Expense",
+    "isIncome": "Income",
+    "amount": "Amount"
 }

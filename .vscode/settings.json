@@ -1,0 +1,8 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "java.organizeImports": "explicit",
+        "source.fixAll": "always"
+    },
+    "editor.formatOnSave": true
+}
