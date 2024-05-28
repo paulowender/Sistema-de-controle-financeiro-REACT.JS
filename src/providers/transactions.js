@@ -68,17 +68,17 @@ export const TransactionsProvider = () => {
       required: true
     },
     {
-      id: 'date',
-      type: 'date',
-      label: tr('date'),
-      name: 'date'
-    },
-    {
       id: 'category',
       type: 'dropdown',
       label: tr('category'),
       name: 'category',
       fetch: categoryService.getAll.bind(categoryService)
+    },
+    {
+      id: 'date',
+      type: 'date',
+      label: tr('date'),
+      name: 'date'
     },
     {
       id: 'type',

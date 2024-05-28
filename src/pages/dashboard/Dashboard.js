@@ -234,10 +234,11 @@ export default function Dashboard() {
                   }}
                 >
                   <Form
-                    title={tr('save')}
+                    title={tr('add')}
                     inputs={fields}
                     onCreate={handleAdd}
                     onEdit={() => { }}
+                    buttonText={tr('save')}
                   />
                 </Paper>
               </Grid>

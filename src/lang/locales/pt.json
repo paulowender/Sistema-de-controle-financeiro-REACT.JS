@@ -11,6 +11,7 @@
     "dashboard": "Visão geral",
     "date": "Data",
     "description": "Descricão",
+    "fetching": "Buscando",
     "isExpense": "Despesa",
     "isIncome": "Receita",
     "language": "Português",

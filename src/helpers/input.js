@@ -1,5 +1,4 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { tr } from '../lang';
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import AsyncDropdown from './fields/async_dropdown';
 
 export const getField = (input) => {
@@ -55,32 +54,30 @@ export const getField = (input) => {
                 label={label}
             />
         case 'checkboxgroup':
-            return <Box sx={{ display: 'flex' }}>
-                <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
-                    <FormLabel component='legend'>Assign responsibility</FormLabel>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={false} onChange={(v) => { }} name='gilad' />
-                            }
-                            label='Gilad Gray'
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={false} onChange={(v) => { }} name='jason' />
-                            }
-                            label='Jason Killian'
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={false} onChange={(v) => { }} name='antoine' />
-                            }
-                            label='Antoine Llorca'
-                        />
-                    </FormGroup>
-                    <FormHelperText>Be careful</FormHelperText>
-                </FormControl>
-            </Box>
+            return <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
+                <FormLabel component='legend'>Assign responsibility</FormLabel>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={false} onChange={(v) => { }} name='gilad' />
+                        }
+                        label='Gilad Gray'
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={false} onChange={(v) => { }} name='jason' />
+                        }
+                        label='Jason Killian'
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox checked={false} onChange={(v) => { }} name='antoine' />
+                        }
+                        label='Antoine Llorca'
+                    />
+                </FormGroup>
+                <FormHelperText>Be careful</FormHelperText>
+            </FormControl>
         case 'button':
             return <Button
                 color='primary'
@@ -95,22 +92,19 @@ export const getField = (input) => {
                 return <AsyncDropdown id={id} label={label} value={value} onChange={onChange} fetch={fetch} />
             }
             return (
-                <FormControl sx={{ m: 1, p: 1 }}>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id={`field-${id}`}>{label}</InputLabel>
                     <Select
                         labelId={`field-${id}`}
                         id={`field-${id}`}
-                        value={value}
+                        value={value || ''}
                         label={label}
                         onChange={e => onChange(e.target.value)}
                     >
-                        <MenuItem value=''>
-                            {tr('choose')}
-                        </MenuItem>
                         {getOptions()}
                     </Select>
                 </FormControl>
-            );
+            )
         default:
             console.warn(`input type ${type} not found`)
             return <></>

@@ -11,14 +11,15 @@ export default function Form({
   inputs = [],
   onCreate = (item) => { console.log('onCreate', item) },
   onEdit = (item) => { console.log('onEdit', item) },
-  id = null
+  id = null,
+  buttonText = 'Save',
 }) {
 
   const [fields, setFields] = useState({});
 
   const prepareFields = useCallback(async () => {
     let fields = {};
-    inputs.forEach(async (input) => {
+    inputs.forEach((input) => {
       input.onChange = (value) => {
         input.value = value
         const updated = { ...fields }
@@ -27,11 +28,6 @@ export default function Form({
         setFields(updated)
       }
       input.value = getValue(input)
-
-      if (input.fetch && !input.options) {
-        input.options = await input.fetch()
-      }
-
       fields[input.name] = input
     })
 
@@ -74,8 +70,6 @@ export default function Form({
           const props = { key: index, sx: { ml: 1 } }
           return React.cloneElement(getField(field), props)
         })}
-      </div>
-      <div className='d-flex flex-row w-100 justify-content-end'>
         <LoadingButton
           loading={false}
           loadingPosition='start'
@@ -84,7 +78,7 @@ export default function Form({
           onClick={handleSave}
           sx={{ m: 1, p: 1 }}
         >
-          {title}
+          {buttonText}
         </LoadingButton>
       </div>
     </React.Fragment>

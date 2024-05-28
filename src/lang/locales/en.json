@@ -11,6 +11,7 @@
     "dashboard": "Dashboard",
     "date": "Date",
     "description": "Description",
+    "fetching": "Fetching",
     "isExpense": "Expense",
     "isIncome": "Income",
     "language": "English",
