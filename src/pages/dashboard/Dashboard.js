@@ -149,8 +149,8 @@ export default function Dashboard() {
             >
               {tr('dashboard')}
             </Typography>
-            <IconButton color="inherit">
-              {darkMode ? <DarkModeOutlined onClick={toggleTheme} /> : <LightModeOutlined onClick={toggleTheme} />}
+            <IconButton color="inherit" onClick={toggleTheme}>
+              {darkMode ? <DarkModeOutlined /> : <LightModeOutlined />}
             </IconButton>
             <IconButton color="inherit">
               <Badge badgeContent={0} color="secondary">
@@ -234,7 +234,7 @@ export default function Dashboard() {
                   }}
                 >
                   <Form
-                    title={tr('add')}
+                    title={tr('save')}
                     inputs={fields}
                     onCreate={handleAdd}
                     onEdit={() => { }}

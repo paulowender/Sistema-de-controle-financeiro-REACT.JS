@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { tr } from "../lang";
+import { CategoryService } from "../services/category";
 import { TransactionService } from "../services/transactions";
 
 export const TransactionsProvider = () => {
 
   const [service] = useState(new TransactionService());
+  const [categoryService] = useState(new CategoryService());
   const [transactions, setTransactions] = useState([]);
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
@@ -75,7 +77,8 @@ export const TransactionsProvider = () => {
       id: 'category',
       type: 'dropdown',
       label: tr('category'),
-      name: 'category'
+      name: 'category',
+      fetch: categoryService.getAll.bind(categoryService)
     },
     {
       id: 'type',

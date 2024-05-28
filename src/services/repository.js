@@ -30,9 +30,8 @@ export class FirebaseRepository {
    * @param {number} [limit] - The optional limit on the number of documents to retrieve.
    * @return {Promise<void>} - A promise that resolves when the data is retrieved successfully.
    */
-  async getCollection(path, callback, onError, orderByField, order, whereClauses, limitValue) {
+  async getCollection(path, orderByField, order, whereClauses, limitValue) {
     if (!path) throw new Error('Path is required');
-    if (!callback) throw new Error('Callback is required');
 
     let ref = collection(this.db, path);
 
@@ -52,15 +51,14 @@ export class FirebaseRepository {
 
     try {
       const querySnapshot = await getDocs(ref);
-      const data = querySnapshot.docs.map(doc => doc.data());
-      callback(data);
+      return querySnapshot.docs.map(doc => doc.data());
     } catch (err) {
       console.log('Error on getCollection', err);
-      if (onError) onError(err);
+      throw err;
     }
   }
 
-  getDocs = (path, whereClauses, orderByField, order , limitValue) => {
+  getDocs = (path, whereClauses, orderByField, order, limitValue) => {
     if (!path) throw new Error('Path is required');
 
     let ref = collection(this.db, path);
@@ -147,7 +145,9 @@ export class FirebaseRepository {
     }
 
     return onSnapshot(ref, querySnapshot => {
-      const data = querySnapshot.docs.map(doc => doc.data());
+      const data = querySnapshot.docs.map(doc => {
+        return { ...doc.data(), id: doc.id }
+      });
       callback(data);
     }, err => {
       console.log('Error on listenCollection', err);
