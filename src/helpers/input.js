@@ -1,4 +1,6 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, TextField } from "@mui/material"
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { tr } from '../lang';
+import AsyncDropdown from './fields/async_dropdown';
 
 export const getField = (input) => {
     const {
@@ -10,9 +12,16 @@ export const getField = (input) => {
         required,
         disabled,
         readOnly,
-        helperText,
         onChange = (value) => { },
+        options = [],
+        fetch
     } = input
+
+    const getOptions = () => {
+        return options.map((option) => {
+            return <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+        })
+    }
 
     switch (type) {
         case 'text':
@@ -47,26 +56,26 @@ export const getField = (input) => {
             />
         case 'checkboxgroup':
             return <Box sx={{ display: 'flex' }}>
-                <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-                    <FormLabel component="legend">Assign responsibility</FormLabel>
+                <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
+                    <FormLabel component='legend'>Assign responsibility</FormLabel>
                     <FormGroup>
                         <FormControlLabel
                             control={
-                                <Checkbox checked={false} onChange={(v) => { }} name="gilad" />
+                                <Checkbox checked={false} onChange={(v) => { }} name='gilad' />
                             }
-                            label="Gilad Gray"
+                            label='Gilad Gray'
                         />
                         <FormControlLabel
                             control={
-                                <Checkbox checked={false} onChange={(v) => { }} name="jason" />
+                                <Checkbox checked={false} onChange={(v) => { }} name='jason' />
                             }
-                            label="Jason Killian"
+                            label='Jason Killian'
                         />
                         <FormControlLabel
                             control={
-                                <Checkbox checked={false} onChange={(v) => { }} name="antoine" />
+                                <Checkbox checked={false} onChange={(v) => { }} name='antoine' />
                             }
-                            label="Antoine Llorca"
+                            label='Antoine Llorca'
                         />
                     </FormGroup>
                     <FormHelperText>Be careful</FormHelperText>
@@ -74,13 +83,34 @@ export const getField = (input) => {
             </Box>
         case 'button':
             return <Button
-                color="primary"
-                variant="contained"
+                color='primary'
+                variant='contained'
                 onClick={() => onChange()}
                 sx={{ m: 1, p: 1 }}
             >
                 {label}
             </Button>
+        case 'dropdown':
+            if (fetch) {
+                return <AsyncDropdown id={id} label={label} value={value} onChange={onChange} fetch={fetch} />
+            }
+            return (
+                <FormControl sx={{ m: 1, p: 1 }}>
+                    <InputLabel id={`field-${id}`}>{label}</InputLabel>
+                    <Select
+                        labelId={`field-${id}`}
+                        id={`field-${id}`}
+                        value={value}
+                        label={label}
+                        onChange={e => onChange(e.target.value)}
+                    >
+                        <MenuItem value=''>
+                            {tr('choose')}
+                        </MenuItem>
+                        {getOptions()}
+                    </Select>
+                </FormControl>
+            );
         default:
             console.warn(`input type ${type} not found`)
             return <></>
@@ -96,7 +126,7 @@ export const getValue = (input) => {
         case 'checkbox':
             return value || false
         case 'dropdown':
-            return value || 0
+            return value || ''
         case 'date':
             return value || new Date().toISOString().slice(0, 10)
         default:

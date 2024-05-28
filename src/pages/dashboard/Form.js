@@ -1,6 +1,7 @@
-import { Button } from '@mui/material';
+import { SaveOutlined } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getField, getValue } from '../../helpers/input';
 import Title from './Title';
 
@@ -13,30 +14,36 @@ export default function Form({
   id = null
 }) {
 
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState({});
 
-  const prepareFields = () => {
-    let fields = [];
-    inputs.forEach((input, index) => {
+  const prepareFields = useCallback(async () => {
+    let fields = {};
+    inputs.forEach(async (input) => {
       input.onChange = (value) => {
-        let newFields = [...fields];
-        newFields[index].value = value;
-        setFields(newFields);
+        input.value = value
+        const updated = { ...fields }
+        updated[input.name] = input
+
+        setFields(updated)
       }
       input.value = getValue(input)
 
-      fields.push(input)
+      if (input.fetch && !input.options) {
+        input.options = await input.fetch()
+      }
+
+      fields[input.name] = input
     })
 
     setFields(fields)
-  }
+  }, [inputs]);
 
   useEffect(() => {
     prepareFields()
-  }, []);
+  }, [prepareFields]);
 
   const handleSave = () => {
-    const values = fields.map((field) => field.required ? field.value || false : true)
+    const values = Object.values(fields).map((field) => field.required ? field.value || false : true)
 
     if (values.includes(false)) {
       alert('Preencha todos os campos obrigatórios')
@@ -44,7 +51,7 @@ export default function Form({
     }
 
     const item = {}
-    fields.forEach((field, index) => {
+    Object.values(fields).forEach((field) => {
       item[field.name] = field.value
     })
 
@@ -63,18 +70,22 @@ export default function Form({
     <React.Fragment>
       <Title>{title}</Title>
       <div className='d-flex flex-row justify-content-between align-items-center w-100'>
-        {fields.map((field, index) => {
+        {Object.values(fields).map((field, index) => {
           const props = { key: index, sx: { ml: 1 } }
           return React.cloneElement(getField(field), props)
         })}
-        <Button
-          color="primary"
-          variant="contained"
+      </div>
+      <div className='d-flex flex-row w-100 justify-content-end'>
+        <LoadingButton
+          loading={false}
+          loadingPosition='start'
+          startIcon={<SaveOutlined />}
+          variant='outlined'
           onClick={handleSave}
           sx={{ m: 1, p: 1 }}
         >
           {title}
-        </Button>
+        </LoadingButton>
       </div>
     </React.Fragment>
   );
