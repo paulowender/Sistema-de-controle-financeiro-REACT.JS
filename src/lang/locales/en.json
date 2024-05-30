@@ -1,5 +1,5 @@
 {
-    "appName": "Finance App",
+    "appName": "Financineitor",
     "actions": "Actions",
     "add": "Add",
     "amount": "Amount",
@@ -7,6 +7,7 @@
     "cash": "Cash",
     "category": "Category",
     "choose": "Choose",
+    "copyright": "{appName} © {year}",
     "currency": "Dollar",
     "currencySymbol": "$",
     "dashboard": "Dashboard",

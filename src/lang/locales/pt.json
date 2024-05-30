@@ -7,6 +7,7 @@
     "cash": "Saldo",
     "category": "Categoria",
     "choose": "Selecione",
+    "copyright": "{appName} © {year}",
     "currency": "Real",
     "currencySymbol": "R$",
     "dashboard": "Visão geral",
