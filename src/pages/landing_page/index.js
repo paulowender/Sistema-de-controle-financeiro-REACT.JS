@@ -1,40 +1,50 @@
-import { Backdrop, Box, CircularProgress, CssBaseline, Grid, Typography } from '@mui/material';
-import React from 'react';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import * as React from 'react';
+import AppCopyright from '../../components/Copyright';
+import LoginForm from '../../components/Login/login';
+import { AppImages } from '../../constants/images';
+import { tr } from '../../lang';
 
 
-export default function LandingPage() {
-    const loginImage = '../../assets/images/finance.png';
+export default function LandingPage(props) {
+    const { theme: { ThemeToggleButton } } = props;
+
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={false}
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 3,
+                    height: '100vh',
+                    overflow: 'auto',
+                    backgroundImage: `url(${AppImages.background})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+            />
+            <Box
+                sx={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    p: 1,
+                }}
             >
-                <CircularProgress color="inherit" />
-            </Backdrop>
-            <Grid container>
-                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box component="img" src={loginImage} sx={{ width: '100%', height: 'auto' }} alt="login image" />
-                </Grid>
-                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Box sx={{ width: '100%', maxWidth: 400 }}>
-                        <Typography variant="h4" component="h1" gutterBottom>
-                            Sign in
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                            Sign in to your account
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Don&apos;t have an account?{' '}
-                            <Typography variant="body1" component="span" color="primary" sx={{ cursor: 'pointer' }}>
-                                Sign up
-                            </Typography>
-                        </Typography>
-                    </Box>
-                </Grid>
-            </Grid>
+                {/* Logo */}
+                <img src={AppImages.logo} alt="logo" height={200} />
+
+                {/* App Name */}
+                <h1>{tr('appName')}</h1>
+
+                {/* Login Form */}
+                <LoginForm />
+                <AppCopyright sx={{ mt: 4, mb: 4 }} />
+                <ThemeToggleButton />
+            </Box>
         </Box>
     );
 }
-
