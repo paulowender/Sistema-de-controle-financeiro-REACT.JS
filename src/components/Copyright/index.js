@@ -4,7 +4,6 @@ import { tr } from '../../lang';
 
 function AppCopyright(props) {
     let copy = tr('copyright');
-    console.log(copy)
 
     if (copy.includes('{appName}')) {
         const appName = tr('appName');
