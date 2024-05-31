@@ -7,7 +7,6 @@ import SignUpForm from '../../components/Login/signup';
 import { AppImages } from '../../constants/images';
 import { tr } from '../../lang';
 
-
 export default function LandingPage(props) {
     const { theme: { ThemeToggleButton } } = props;
 
@@ -44,8 +43,8 @@ export default function LandingPage(props) {
                 <h1>{tr('appName')}</h1>
 
                 {/* Login Form */}
-                {!signUpForm && <SignInForm signUpClick={() => setSignUpForm(true)} />}
-                {signUpForm && <SignUpForm signInClick={() => setSignUpForm(false)} />}
+                {!signUpForm && <SignInForm signUpClick={() => setSignUpForm(true)} {...props} />}
+                {signUpForm && <SignUpForm signInClick={() => setSignUpForm(false)} {...props} />}
                 <AppCopyright sx={{ mt: 4, mb: 4 }} />
                 <ThemeToggleButton />
             </Box>

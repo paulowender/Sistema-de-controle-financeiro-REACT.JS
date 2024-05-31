@@ -86,7 +86,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Dashboard(props) {
-  const { theme: { ThemeToggleButton } } = props;
+  const { authService, theme: { ThemeToggleButton } } = props;
+  console.log('authService', authService);
+  if (!authService.user) {
+    window.location = '/';
+    return null;
+  }
+
   const {
     fields,
     income,

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Modules from '../constants/modules';
+import { AuthenticationService } from '../services/auth';
 import ThemeService from '../services/theme';
 
+const authService = new AuthenticationService();
 function App() {
   return (
     <div>
@@ -14,7 +16,7 @@ function App() {
             element={
               // Inject the theme context here
               <ThemeService>
-                <module.page />
+                <module.page authService={authService} />
               </ThemeService>
             }
           />

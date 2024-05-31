@@ -7,12 +7,9 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { tr } from '../../lang';
-import { AuthenticationService } from '../../services/auth';
 
 const SignInForm = (props) => {
-    const { signUpClick = () => { }, signInClick = () => { } } = props
-
-    const authService = new AuthenticationService();
+    const { authService, signUpClick = () => { } } = props
 
     const [formData, setFormData] = useState({
         email: '',
@@ -63,7 +60,9 @@ const SignInForm = (props) => {
             authService.signIn(formData.email, formData.password)
                 .then((userCredentials) => {
                     console.log('Logged in', userCredentials.user);
-
+                    if (userCredentials) {
+                        window.location = '/dashboard';
+                    }
                 })
                 .catch((error) => {
                     console.log('Login failed', error);
