@@ -16,6 +16,7 @@
     "dontHaveAccount":"Don't have an account? Sign Up",
     "email": "Email",
     "emailRequired": "Email is required",
+    "emailOrPasswordInvalid": "Email or password invalid",
     "fetching": "Fetching",
     "forgotPassword": "Forgot Password?",
     "isExpense": "Expense",

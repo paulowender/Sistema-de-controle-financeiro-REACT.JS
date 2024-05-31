@@ -1,4 +1,5 @@
 export const keys = {
+    categories: 'categories',
     transactions: 'transactions',
-    categories: 'categories'
+    users: 'users'
 }

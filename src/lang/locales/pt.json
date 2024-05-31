@@ -16,6 +16,7 @@
     "dontHaveAccount":"Não tem uma conta? Registre-se",
     "email": "E-mail",
     "emailRequired": "E-mail obrigatório",
+    "emailOrPasswordInvalid": "E-mail ou senha inválidos",
     "fetching": "Buscando",
     "forgotPassword": "Esqueceu sua senha?",
     "isExpense": "Despesa",

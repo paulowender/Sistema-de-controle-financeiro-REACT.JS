@@ -1,4 +1,4 @@
-import { CssBaseline, Grid } from '@mui/material';
+import { Alert, CssBaseline, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -7,8 +7,12 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { tr } from '../../lang';
+import { AuthenticationService } from '../../services/auth';
 
 const LoginForm = () => {
+
+    const authService = new AuthenticationService();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -18,6 +22,8 @@ const LoginForm = () => {
     const [errors, setErrors] = useState({
         email: '',
         password: '',
+        severity: 'error',
+        message: '',
     });
 
     const validateForm = () => {
@@ -35,11 +41,11 @@ const LoginForm = () => {
         }
 
         // Password strength check
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-        if (!passwordRegex.test(formData.password)) {
-            newErrors.password = tr('passwordStrength');
-            valid = false;
-        }
+        // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        // if (!passwordRegex.test(formData.password)) {
+        //     newErrors.password = tr('passwordStrength');
+        //     valid = false;
+        // }
 
         setErrors(newErrors);
         return valid;
@@ -48,8 +54,16 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            // Add your login logic here
-            console.log('Login successful');
+            authService.signIn(formData.email, formData.password)
+                .then((userCredentials) => {
+                    console.log('Logged in', userCredentials.user);
+
+                })
+                .catch((error) => {
+                    console.log('Login failed', error);
+                    setErrors({ severity: 'error', message: tr('emailOrPasswordInvalid') });
+                });
+
         } else {
             console.log('Login failed');
         }
@@ -113,6 +127,13 @@ const LoginForm = () => {
                     label={tr('rememberMe')}
                     sx={{ mt: 1, textAlign: 'left' }}
                 />
+                {errors.message && <Alert
+                    variant="filled"
+                    severity={errors.severity}
+                    onClose={() => setErrors({ ...errors, message: '' })}
+                >
+                    {errors.message}
+                </Alert>}
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
                     {tr('signIn')}
                 </Button>
