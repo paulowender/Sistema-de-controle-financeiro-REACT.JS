@@ -1,4 +1,4 @@
-import { CssBaseline, Grid, Paper } from '@mui/material';
+import { Alert, CssBaseline, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -6,34 +6,52 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { tr } from '../../lang';
+import { AuthenticationService } from '../../services/auth';
 
-const SigninUpForm = () => {
+const SignInForm = (props) => {
+    const { signUpClick = () => { }, signInClick = () => { } } = props
+
+    const authService = new AuthenticationService();
+
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: '',
         rememberMe: false,
     });
 
     const [errors, setErrors] = useState({
-        username: '',
+        email: '',
         password: '',
+        severity: 'error',
+        message: '',
     });
 
     const validateForm = () => {
         let valid = true;
-        const newErrors = { username: '', password: '' };
+        const newErrors = {
+            email: '',
+            password: '',
+            severity: 'error',
+            message: '',
+        };
 
-        if (!formData.username) {
-            newErrors.username = 'Username is required';
+        if (!formData.email) {
+            newErrors.email = tr('emailRequired');
+            valid = false;
+        }
+
+        if (!formData.password) {
+            newErrors.password = tr('passwordRequired');
             valid = false;
         }
 
         // Password strength check
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-        if (!formData.password || !passwordRegex.test(formData.password)) {
-            newErrors.password = 'Password must be at least 6 characters with at least one uppercase and one lowercase letter';
-            valid = false;
-        }
+        // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        // if (!passwordRegex.test(formData.password)) {
+        //     newErrors.password = tr('passwordStrength');
+        //     valid = false;
+        // }
 
         setErrors(newErrors);
         return valid;
@@ -42,8 +60,16 @@ const SigninUpForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            // Add your login logic here
-            console.log('Login successful');
+            authService.signIn(formData.email, formData.password)
+                .then((userCredentials) => {
+                    console.log('Logged in', userCredentials.user);
+
+                })
+                .catch((error) => {
+                    console.log('Login failed', error);
+                    setErrors({ severity: 'error', message: tr('emailOrPasswordInvalid') });
+                });
+
         } else {
             console.log('Login failed');
         }
@@ -63,9 +89,9 @@ const SigninUpForm = () => {
             xs={12}
             sm={8}
             md={5}
-            component={Paper}
-            elevation={6}
-            square
+        // component={Paper}
+        // elevation={6}
+        // square
         >
             <Box
                 component="form"
@@ -74,49 +100,56 @@ const SigninUpForm = () => {
                     maxWidth: '500px',
                     margin: 'auto',
                     padding: '20px',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                    // borderRadius: '8px',
+                    // boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                     // backgroundColor: 'white',
                 }}
             >
                 <CssBaseline />
                 <TextField
                     fullWidth
-                    label="Username"
-                    name="username"
-                    value={formData.username}
+                    label={tr('email')}
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
-                    error={Boolean(errors.username)}
-                    helperText={errors.username}
-                    margin="normal"
+                    error={Boolean(errors.email)}
+                    helperText={errors.email}
+                    margin="dense"
                 />
                 <TextField
                     fullWidth
                     type="password"
-                    label="Password"
+                    label={tr('password')}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     error={Boolean(errors.password)}
                     helperText={errors.password}
-                    margin="normal"
+                    margin="dense"
                     sx={{ mt: 2 }}
                 />
                 <FormControlLabel
                     control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
-                    label="Remember Me"
+                    label={tr('rememberMe')}
                     sx={{ mt: 1, textAlign: 'left' }}
                 />
+                {errors.message && <Alert
+                    variant="filled"
+                    severity={errors.severity}
+                    onClose={() => setErrors({ ...errors, message: '' })}
+                >
+                    {errors.message}
+                </Alert>}
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                    Login
+                    {tr('signIn')}
                 </Button>
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
                     <Link href="#" variant="body2">
-                        Forgot Password?
+                        {tr('forgotPassword')}
                     </Link>
                     <Box mt={1}>
-                        <Link href="#" variant="body2">
-                            Don't have an account? Sign Up
+                        <Link href="#" variant="body2" onClick={signUpClick}>
+                            {tr('dontHaveAccount')}
                         </Link>
                     </Box>
                 </Box>
@@ -125,4 +158,4 @@ const SigninUpForm = () => {
     );
 };
 
-export default SigninUpForm;
+export default SignInForm;

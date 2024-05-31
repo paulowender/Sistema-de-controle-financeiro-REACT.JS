@@ -9,17 +9,20 @@ import { useState } from 'react';
 import { tr } from '../../lang';
 import { AuthenticationService } from '../../services/auth';
 
-const LoginForm = () => {
-
+const SignUpForm = (props) => {
+    const { signInClick = () => { } } = props
     const authService = new AuthenticationService();
 
     const [formData, setFormData] = useState({
+        name: '',
         email: '',
         password: '',
-        rememberMe: false,
+        passwordConfirm: '',
+        agreeTerms: false,
     });
 
     const [errors, setErrors] = useState({
+        name: '',
         email: '',
         password: '',
         severity: 'error',
@@ -28,7 +31,19 @@ const LoginForm = () => {
 
     const validateForm = () => {
         let valid = true;
-        const newErrors = { email: '', password: '' };
+        const newErrors = {
+            name: '',
+            email: '',
+            password: '',
+            passwordConfirm: '',
+            severity: 'error',
+            message: '',
+        };
+
+        if (!formData.name) {
+            newErrors.name = tr('nameRequired');
+            valid = false;
+        }
 
         if (!formData.email) {
             newErrors.email = tr('emailRequired');
@@ -40,12 +55,20 @@ const LoginForm = () => {
             valid = false;
         }
 
-        // Password strength check
-        // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-        // if (!passwordRegex.test(formData.password)) {
-        //     newErrors.password = tr('passwordStrength');
-        //     valid = false;
-        // }
+        if (!formData.passwordConfirm) {
+            newErrors.passwordConfirm = tr('passwordConfirmRequired');
+            valid = false;
+        }
+
+        if (formData.password !== formData.passwordConfirm) {
+            newErrors.passwordConfirm = tr('passwordsDontMatch');
+            valid = false;
+        }
+
+        if (valid && !formData.agreeTerms) {
+            newErrors.message = tr('agreeTermsRequired');
+            valid = false;
+        }
 
         setErrors(newErrors);
         return valid;
@@ -54,26 +77,27 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            authService.signIn(formData.email, formData.password)
+            authService.signUp(formData.email, formData.password)
                 .then((userCredentials) => {
                     console.log('Logged in', userCredentials.user);
 
+                    // TODO: Redirect to dashboard
                 })
                 .catch((error) => {
-                    console.log('Login failed', error);
-                    setErrors({ severity: 'error', message: tr('emailOrPasswordInvalid') });
+                    console.log('Sign up failed', error);
+                    setErrors({ severity: 'error', message: tr('failedToSignUp') });
                 });
 
         } else {
-            console.log('Login failed');
+            console.log('Sign up failed');
         }
     };
 
     const handleChange = (e) => {
-        const { name, value, checked } = e.target;
+        const { name, checked, value } = e.target;
         setFormData({
             ...formData,
-            [name]: name === 'rememberMe' ? checked : value,
+            [name]: name === 'agreeTerms' ? checked : value,
         });
     };
 
@@ -102,13 +126,23 @@ const LoginForm = () => {
                 <CssBaseline />
                 <TextField
                     fullWidth
+                    label={tr('name')}
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    error={Boolean(errors.name)}
+                    helperText={errors.name}
+                    margin="dense"
+                />
+                <TextField
+                    fullWidth
                     label={tr('email')}
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     error={Boolean(errors.email)}
                     helperText={errors.email}
-                    margin="normal"
+                    margin="dense"
                 />
                 <TextField
                     fullWidth
@@ -119,13 +153,23 @@ const LoginForm = () => {
                     onChange={handleChange}
                     error={Boolean(errors.password)}
                     helperText={errors.password}
-                    margin="normal"
-                    sx={{ mt: 2 }}
+                    margin="dense"
+                />
+                <TextField
+                    fullWidth
+                    type="password"
+                    label={tr('passwordConfirm')}
+                    name="passwordConfirm"
+                    value={formData.passwordConfirm}
+                    onChange={handleChange}
+                    error={Boolean(errors.passwordConfirm)}
+                    helperText={errors.passwordConfirm}
+                    margin="dense"
                 />
                 <FormControlLabel
-                    control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
-                    label={tr('rememberMe')}
-                    sx={{ mt: 1, textAlign: 'left' }}
+                    control={<Checkbox checked={formData.agreeTerms} onChange={handleChange} name="agreeTerms" color="primary" />}
+                    label={tr('agreeTerms')}
+                    sx={{ textAlign: 'left' }}
                 />
                 {errors.message && <Alert
                     variant="filled"
@@ -135,15 +179,12 @@ const LoginForm = () => {
                     {errors.message}
                 </Alert>}
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                    {tr('signIn')}
+                    {tr('signUp')}
                 </Button>
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
-                    <Link href="#" variant="body2">
-                        {tr('forgotPassword')}
-                    </Link>
                     <Box mt={1}>
-                        <Link href="#" variant="body2">
-                            {tr('dontHaveAccount')}
+                        <Link href="#" variant="body2" sx={{ cursor: 'pointer' }} onClick={signInClick}>
+                            {tr('alreadyHaveAccount')}
                         </Link>
                     </Box>
                 </Box>
@@ -152,4 +193,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default SignUpForm;
