@@ -6,32 +6,38 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { tr } from '../../lang';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: '',
         rememberMe: false,
     });
 
     const [errors, setErrors] = useState({
-        username: '',
+        email: '',
         password: '',
     });
 
     const validateForm = () => {
         let valid = true;
-        const newErrors = { username: '', password: '' };
+        const newErrors = { email: '', password: '' };
 
-        if (!formData.username) {
-            newErrors.username = 'Username is required';
+        if (!formData.email) {
+            newErrors.email = tr('emailRequired');
+            valid = false;
+        }
+
+        if (!formData.password) {
+            newErrors.password = tr('passwordRequired');
             valid = false;
         }
 
         // Password strength check
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-        if (!formData.password || !passwordRegex.test(formData.password)) {
-            newErrors.password = 'Password must be at least 6 characters with at least one uppercase and one lowercase letter';
+        if (!passwordRegex.test(formData.password)) {
+            newErrors.password = tr('passwordStrength');
             valid = false;
         }
 
@@ -74,26 +80,26 @@ const LoginForm = () => {
                     maxWidth: '500px',
                     margin: 'auto',
                     padding: '20px',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                    // borderRadius: '8px',
+                    // boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                     // backgroundColor: 'white',
                 }}
             >
                 <CssBaseline />
                 <TextField
                     fullWidth
-                    label="Username"
-                    name="username"
-                    value={formData.username}
+                    label={tr('email')}
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
-                    error={Boolean(errors.username)}
-                    helperText={errors.username}
+                    error={Boolean(errors.email)}
+                    helperText={errors.email}
                     margin="normal"
                 />
                 <TextField
                     fullWidth
                     type="password"
-                    label="Password"
+                    label={tr('password')}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
@@ -104,19 +110,19 @@ const LoginForm = () => {
                 />
                 <FormControlLabel
                     control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
-                    label="Remember Me"
+                    label={tr('rememberMe')}
                     sx={{ mt: 1, textAlign: 'left' }}
                 />
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                    Login
+                    {tr('signIn')}
                 </Button>
                 <Box sx={{ mt: 2, textAlign: 'center' }}>
                     <Link href="#" variant="body2">
-                        Forgot Password?
+                        {tr('forgotPassword')}
                     </Link>
                     <Box mt={1}>
                         <Link href="#" variant="body2">
-                            Don't have an account? Sign Up
+                            {tr('dontHaveAccount')}
                         </Link>
                     </Box>
                 </Box>
