@@ -1,3 +1,4 @@
+import { DashboardOutlined } from "@mui/icons-material";
 import { FaHome } from "react-icons/fa";
 import { tr } from "../lang";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -12,7 +13,7 @@ const Modules = [
     },
     {
         name: tr("dashboard"),
-        icon: <FaHome />,
+        icon: <DashboardOutlined />,
         path: "/dashboard",
         page: Dashboard
     }

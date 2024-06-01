@@ -74,12 +74,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Dashboard(props) {
-  const { theme, ThemeToggleButton, darkMode } = props.theme
+  const { theme, ThemeToggleButton, darkMode } = props?.theme || {};
   const { user, loggedin } = useAuth()
 
   console.log('User', user);
-
-  if (!loggedin) return <></>
 
   const {
     fields,
@@ -156,11 +154,6 @@ export default function Dashboard(props) {
         </Toolbar>
         <Divider />
         <AppDrawer />
-        {/* <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List> */}
       </Drawer>
       <Box
         component="main"
