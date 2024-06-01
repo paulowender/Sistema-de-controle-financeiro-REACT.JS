@@ -43,8 +43,8 @@ export default function LandingPage(props) {
                 <h1>{tr('appName')}</h1>
 
                 {/* Login Form */}
-                {!signUpForm && <SignInForm signUpClick={() => setSignUpForm(true)} {...props} />}
-                {signUpForm && <SignUpForm signInClick={() => setSignUpForm(false)} {...props} />}
+                {!signUpForm && <SignInForm signUpClick={() => setSignUpForm(true)} />}
+                {signUpForm && <SignUpForm signInClick={() => setSignUpForm(false)} />}
                 <AppCopyright sx={{ mt: 4, mb: 4 }} />
                 <ThemeToggleButton />
             </Box>

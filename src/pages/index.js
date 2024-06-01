@@ -1,13 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Modules from '../constants/modules';
-import { AuthenticationService } from '../services/auth';
+import AuthProvider from '../contexts/auth';
 import ThemeService from '../services/theme';
 
-const authService = new AuthenticationService();
 function App() {
   return (
-    <div>
+    <AuthProvider>
       <Routes>
         {Modules.map((module, index) => (
           <Route
@@ -16,13 +15,13 @@ function App() {
             element={
               // Inject the theme context here
               <ThemeService>
-                <module.page authService={authService} />
+                <module.page />
               </ThemeService>
             }
           />
         ))}
       </Routes>
-    </div>
+    </AuthProvider>
   );
 }
 

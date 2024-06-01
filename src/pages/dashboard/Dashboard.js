@@ -11,13 +11,14 @@ import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { FaDollarSign } from 'react-icons/fa';
+import AppCopyright from '../../components/Copyright';
+import { useAuth } from '../../contexts/auth';
 import { tr } from '../../lang';
 import { TransactionsProvider } from '../../providers/transactions';
 import Cash from './Cash';
@@ -25,19 +26,6 @@ import Chart from './Chart';
 import AppDrawer from './components/drawer';
 import Form from './Form';
 import TransactionsList from './Transactions';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -86,13 +74,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Dashboard(props) {
-  const { authService, theme: { ThemeToggleButton } } = props;
+  const { theme, ThemeToggleButton, darkMode } = props.theme
+  const { user, loggedin } = useAuth()
 
-  if (!authService.user) {
-    console.log('Not logged in', authService.user);
-    window.location = '/';
-    return null;
-  }
+  console.log('Theme', theme);
+  console.log('User', user);
+
+  if (!loggedin) return <></>
 
   const {
     fields,
@@ -113,7 +101,7 @@ export default function Dashboard(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: (theme) => theme.palette.primary.main, zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <CircularProgress color="inherit" />
@@ -147,9 +135,6 @@ export default function Dashboard(props) {
             {tr('dashboard')}
           </Typography>
           <ThemeToggleButton />
-          {/* <IconButton color="inherit" onClick={(theme) => ThemeService.toggleTheme()}>
-              {darkMode ? <DarkModeOutlined /> : <LightModeOutlined />}
-            </IconButton> */}
           <IconButton color="inherit">
             <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
@@ -248,7 +233,7 @@ export default function Dashboard(props) {
               </Paper>
             </Grid>
           </Grid>
-          <Copyright sx={{ pt: 4 }} />
+          <AppCopyright sx={{ pt: 4 }} />
         </Container>
       </Box>
     </Box>

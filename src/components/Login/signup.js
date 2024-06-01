@@ -6,10 +6,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { useAuth } from '../../contexts/auth';
 import { tr } from '../../lang';
 
 const SignUpForm = (props) => {
-    const { authService, signInClick = () => { } } = props
+    const { signInClick = () => { } } = props
+
+    const { authService } = useAuth()
 
     const [formData, setFormData] = useState({
         name: '',
@@ -76,9 +79,9 @@ const SignUpForm = (props) => {
         e.preventDefault();
         if (validateForm()) {
             authService.signUp(formData.email, formData.password)
-                .then((userCredentials) => {
-                    console.log('Logged in', userCredentials.user);
-                    if (userCredentials) {
+                .then((user) => {
+                    console.log('Logged in', user);
+                    if (user) {
                         window.location = '/dashboard';
                     }
                 })

@@ -37,3 +37,4 @@ const ThemeService = ({ children }) => {
 }
 
 export default ThemeService;
+export const useTheme = () => React.useContext(ThemeService)
