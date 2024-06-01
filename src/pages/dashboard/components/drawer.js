@@ -4,7 +4,7 @@ import Modules from "../../../constants/modules";
 
 const AppDrawer = () => {
     const currentPath = window.location.pathname;
-    const modules = Modules.filter((module) => module.path.includes(currentPath));
+    const modules = Modules.filter((module) => module.menu);
 
     return (
         <List component="nav">
