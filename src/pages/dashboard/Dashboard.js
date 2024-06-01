@@ -77,7 +77,6 @@ export default function Dashboard(props) {
   const { theme, ThemeToggleButton, darkMode } = props.theme
   const { user, loggedin } = useAuth()
 
-  console.log('Theme', theme);
   console.log('User', user);
 
   if (!loggedin) return <></>
