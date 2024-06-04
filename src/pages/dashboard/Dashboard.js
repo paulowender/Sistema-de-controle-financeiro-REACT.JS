@@ -78,6 +78,8 @@ export default function Dashboard(props) {
   const { theme, ThemeToggleButton, darkMode } = props?.theme || {};
   const { user, loggedin } = useAuth()
 
+  const [selected, setSelected] = React.useState(null);
+
   const {
     fields,
     income,
@@ -92,6 +94,10 @@ export default function Dashboard(props) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  const handleSelect = (item) => {
+    setSelected(item);
   };
 
   return (
@@ -214,18 +220,25 @@ export default function Dashboard(props) {
                 }}
               >
                 <Form
-                  title={tr('add')}
+                  title={`${selected ? tr('edit') : tr('add')} ${tr('transaction')}`}
                   inputs={fields}
                   onCreate={handleAdd}
-                  onEdit={() => { }}
+                  onEdit={handleAdd}
                   buttonText={tr('save')}
+                  selected={selected}
+                  onCancel={() => setSelected(null)}
                 />
               </Paper>
             </Grid>
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <TransactionsList transactions={transactions} onDelete={onDelete} loading={loading} />
+                <TransactionsList
+                  transactions={transactions}
+                  onEdit={handleSelect}
+                  onDelete={onDelete}
+                  loading={loading}
+                />
               </Paper>
             </Grid>
           </Grid>

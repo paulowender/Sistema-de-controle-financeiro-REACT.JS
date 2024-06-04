@@ -46,11 +46,15 @@ export const TransactionsProvider = () => {
   }, [transactions]);
 
   const handleAdd = (transaction) => {
-    service.add(transaction);
+    if (transaction.id) {
+      service.update(transaction);
+    } else {
+      service.add(transaction);
+    }
   };
 
-  const onDelete = (ID) => {
-    service.remove(ID);
+  const onDelete = ({ id }) => {
+    service.remove(id);
   };
 
   const fields = [
@@ -90,6 +94,13 @@ export const TransactionsProvider = () => {
       type: 'date',
       label: tr('date'),
       name: 'date'
+    },
+    {
+      id: 'expense',
+      type: 'checkbox',
+      label: tr('expense'),
+      name: 'expense',
+      value: false
     },
     {
       id: 'pending',

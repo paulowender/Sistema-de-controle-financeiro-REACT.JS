@@ -1,5 +1,6 @@
-import { SaveOutlined } from '@mui/icons-material';
+import { Close, SaveOutlined } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { IconButton } from '@mui/material';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { getField, getValue } from '../../helpers/input';
@@ -7,12 +8,13 @@ import Title from './Title';
 
 
 export default function Form({
-  title = 'Add Transaction',
+  title = 'Form',
   inputs = [],
   onCreate = (item) => { console.log('onCreate', item) },
   onEdit = (item) => { console.log('onEdit', item) },
-  id = null,
+  selected = null,
   buttonText = 'Save',
+  onCancel = () => { console.log('onCancel') },
 }) {
 
   const [fields, setFields] = useState({});
@@ -27,7 +29,7 @@ export default function Form({
 
         setFields(updated)
       }
-      input.value = getValue(input)
+      input.value = selected ? selected[input.name] : getValue(input)
       fields[input.name] = input
     })
 
@@ -51,14 +53,17 @@ export default function Form({
       item[field.name] = field.value
     })
 
-    if (id) {
-      item.id = id
-      onEdit(item)
+    if (selected) {
+      onEdit({
+        ...selected,
+        ...item,
+      })
     } else {
       onCreate(item)
     }
 
     // clear fields
+    onCancel()
     prepareFields()
   };
 
@@ -70,6 +75,17 @@ export default function Form({
           const props = { key: index, sx: { ml: 1 } }
           return React.cloneElement(getField(field), props)
         })}
+        {selected && (
+          <IconButton
+            color='inherit'
+            onClick={() => {
+              prepareFields()
+              onCancel()
+            }}
+          >
+            <Close />
+          </IconButton>
+        )}
         <LoadingButton
           loading={false}
           loadingPosition='start'

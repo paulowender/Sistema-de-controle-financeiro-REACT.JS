@@ -1,8 +1,8 @@
 import { TableCell, TableRow } from "@mui/material";
-import { FaRegArrowAltCircleDown, FaRegArrowAltCircleUp, FaTrash } from "react-icons/fa";
+import { FaEdit, FaRegArrowAltCircleDown, FaRegArrowAltCircleUp, FaTrash } from "react-icons/fa";
 import { tr } from "../../../lang";
 
-const Transaction = ({ transaction, onDelete }) => {
+const Transaction = ({ transaction, onDelete, onEdit }) => {
   const { id, desc, amount, date, category, expense } = transaction
   return (
     <TableRow key={id}>
@@ -14,7 +14,9 @@ const Transaction = ({ transaction, onDelete }) => {
       <TableCell>{date}</TableCell>
       <TableCell>{category}</TableCell>
       <TableCell align="center">
-        <FaTrash onClick={() => onDelete(id)} />
+        <FaEdit onClick={() => onEdit(transaction)} />
+        &nbsp;&nbsp;
+        <FaTrash onClick={() => onDelete(transaction)} />
       </TableCell>
     </TableRow>
   );

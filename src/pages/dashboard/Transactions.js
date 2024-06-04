@@ -9,9 +9,7 @@ import { tr } from '../../lang';
 import Transaction from './components/transaction';
 import Title from './Title';
 
-
-
-export default function TransactionsList({ transactions, onDetails, onDelete }) {
+export default function TransactionsList({ transactions, onEdit, onDelete }) {
   function preventDefault(event) {
     event.preventDefault();
   }
@@ -31,7 +29,7 @@ export default function TransactionsList({ transactions, onDetails, onDelete }) 
         </TableHead>
         <TableBody>
           {transactions.map((transaction) => (
-            <Transaction key={transaction.id} transaction={transaction} onDelete={onDelete} />
+            <Transaction key={transaction.id} transaction={transaction} onDelete={onDelete} onEdit={onEdit} />
           ))}
         </TableBody>
       </Table>

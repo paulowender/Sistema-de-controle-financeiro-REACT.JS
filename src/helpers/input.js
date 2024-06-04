@@ -37,9 +37,8 @@ export const getField = (input) => {
                 disabled={disabled}
                 id={`field-${id}`}
                 label={label}
-                defaultValue={value}
+                value={value}
                 InputProps={{ readOnly }}
-                // helperText={helperText}
                 type={type}
                 onChange={e => onChange(e.target.value)}
             />
