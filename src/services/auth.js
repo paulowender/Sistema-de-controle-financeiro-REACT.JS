@@ -34,4 +34,16 @@ export class AuthenticationService {
     async signUp(email, password) {
         return this.#signUpWithEmailAndPassword(email, password);
     }
+
+    async signOut(callback) {
+        const { auth, signOut } = this.authentication;
+        signOut(auth)
+            .then(() => {
+                console.log('Sign out');
+                if (callback) callback(true);
+            }).catch((error) => {
+                console.log(error);
+                if (callback) callback(false);
+            })
+    }
 }

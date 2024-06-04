@@ -23,4 +23,5 @@ export const FirebaseAuth = {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  signOut: () => FirebaseAuth.auth.signOut()
 }

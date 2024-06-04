@@ -1,30 +1,31 @@
-import { Backdrop, CircularProgress } from '@mui/material';
 import React, { createContext, useContext } from 'react';
+import SplashPage from '../pages/splash';
 import { AuthenticationService } from "../services/auth";
 
 export const AuthContext = createContext(null);
-const authService = new AuthenticationService()
+const auth = new AuthenticationService()
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = React.useState(null);
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        authService.listenAuth(user => {
+        auth.listenAuth(user => {
             console.log('User changed', user);
             setUser(user);
             setLoading(false);
         });
     }, []);
 
+    if (loading) return <SplashPage />
+
+    if (!user && !loading && window.location.pathname !== '/') {
+        window.location = '/'
+        return <SplashPage />
+    }
+
     return (
-        <AuthContext.Provider value={{ user, authService, loading, loggedin: !!user }}>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loading}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+        <AuthContext.Provider value={{ user, auth, loading, loggedin: !!user }}>
             {children}
         </AuthContext.Provider>
     )

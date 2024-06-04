@@ -12,7 +12,7 @@ import { tr } from '../../lang';
 const SignUpForm = (props) => {
     const { signInClick = () => { } } = props
 
-    const { authService } = useAuth()
+    const { auth } = useAuth()
 
     const [formData, setFormData] = useState({
         name: '',
@@ -78,7 +78,7 @@ const SignUpForm = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            authService.signUp(formData.email, formData.password)
+            auth.signUp(formData.email, formData.password)
                 .then((user) => {
                     console.log('Logged in', user);
                     if (user) {

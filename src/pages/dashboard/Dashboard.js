@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { FaDollarSign } from 'react-icons/fa';
 import AppCopyright from '../../components/Copyright';
+import UserMenu from '../../components/User';
 import { useAuth } from '../../contexts/auth';
 import { tr } from '../../lang';
 import { TransactionsProvider } from '../../providers/transactions';
@@ -77,8 +78,6 @@ export default function Dashboard(props) {
   const { theme, ThemeToggleButton, darkMode } = props?.theme || {};
   const { user, loggedin } = useAuth()
 
-  console.log('User', user);
-
   const {
     fields,
     income,
@@ -110,6 +109,7 @@ export default function Dashboard(props) {
             pr: '24px', // keep right padding when drawer closed
           }}
         >
+          {/* Menu button */}
           <IconButton
             edge="start"
             color="inherit"
@@ -131,12 +131,16 @@ export default function Dashboard(props) {
           >
             {tr('dashboard')}
           </Typography>
+          {/* Theme Toggle button */}
           <ThemeToggleButton />
+          {/* Notifications button */}
           <IconButton color="inherit">
             <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          {/* User info */}
+          <UserMenu />
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
