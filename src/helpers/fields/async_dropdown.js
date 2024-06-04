@@ -1,8 +1,8 @@
-import { FormControl, FormHelperText, InputLabel, LinearProgress, MenuItem, Select, Tooltip } from "@mui/material";
+import { Box, FormControl, FormHelperText, InputLabel, LinearProgress, MenuItem, Select, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { tr } from "../../lang";
 
-const AsyncDropdown = ({ id, label, value, onChange, fetch = () => { } }) => {
+const AsyncDropdown = ({ id, label, value, onFetch, onChange, fetch = () => { } }) => {
 
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(false)
@@ -10,7 +10,12 @@ const AsyncDropdown = ({ id, label, value, onChange, fetch = () => { } }) => {
     useEffect(() => {
         setLoading(true)
         fetch().then((data) => {
-            setItems(data)
+            if (onFetch) {
+                const items = onFetch(data)
+                setItems(items)
+            } else {
+                setItems(data)
+            }
             setLoading(false)
         })
     }, [])
@@ -35,9 +40,22 @@ const AsyncDropdown = ({ id, label, value, onChange, fetch = () => { } }) => {
                 label={label}
                 onChange={e => onChange(e.target.value)}
             >
-                {items.map(({ value, label }) => {
-                    return <MenuItem key={value} value={value}>{label}</MenuItem>
-                })}
+                {items.map(({ value, label, prefix }) => (
+                    <MenuItem key={value} value={value}>
+                        {prefix && (
+                            <Box
+                                sx={{
+                                    display: 'inline',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    mr: 1
+                                }}>
+                                {prefix}
+                            </Box>
+                        )}
+                        {label}
+                    </MenuItem>
+                ))}
             </Select>
             {loading && <LoadingHelper />}
         </FormControl>

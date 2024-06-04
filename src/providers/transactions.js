@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaRegArrowAltCircleDown, FaRegArrowAltCircleUp } from "react-icons/fa";
 import { tr } from "../lang";
 import { CategoryService } from "../services/category";
 import { TransactionService } from "../services/transactions";
@@ -72,20 +73,23 @@ export const TransactionsProvider = () => {
       type: 'dropdown',
       label: tr('category'),
       name: 'category',
-      fetch: categoryService.getAll.bind(categoryService)
+      fetch: categoryService.getAll.bind(categoryService),
+      onFetch: (items) => {
+        return items.map((item) => {
+          return {
+            ...item,
+            value: item.label,
+            prefix: item.type === 'income' ? <FaRegArrowAltCircleUp color="green" /> : <FaRegArrowAltCircleDown color="red" />
+          }
+        })
+      },
+      required: true
     },
     {
       id: 'date',
       type: 'date',
       label: tr('date'),
       name: 'date'
-    },
-    {
-      id: 'type',
-      type: 'checkbox',
-      label: tr('isExpense'),
-      name: 'expense',
-      value: false
     },
     {
       id: 'pending',

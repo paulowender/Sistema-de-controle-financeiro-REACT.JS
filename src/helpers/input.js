@@ -13,12 +13,18 @@ export const getField = (input) => {
         readOnly,
         onChange = (value) => { },
         options = [],
-        fetch
+        fetch,
+        onFetch = (items) => { return items }
     } = input
 
     const getOptions = () => {
         return options.map((option) => {
-            return <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+            return (
+                <MenuItem key={option.value} value={option.value}>
+                    {option.prefix && <span>{option.prefix}</span>}
+                    {option.label}
+                </MenuItem>
+            )
         })
     }
 
@@ -89,7 +95,14 @@ export const getField = (input) => {
             </Button>
         case 'dropdown':
             if (fetch) {
-                return <AsyncDropdown id={id} label={label} value={value} onChange={onChange} fetch={fetch} />
+                return <AsyncDropdown
+                    id={id}
+                    label={label}
+                    value={value}
+                    onChange={onChange}
+                    fetch={fetch}
+                    onFetch={onFetch}
+                />
             }
             return (
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
