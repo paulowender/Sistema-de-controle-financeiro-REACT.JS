@@ -25,6 +25,7 @@
     "isExpense": "Expense",
     "isIncome": "Income",
     "language": "English",
+    "logout": "Logout",
     "name": "Name",
     "nameRequired": "Name is required",
     "paid": "Paid",
