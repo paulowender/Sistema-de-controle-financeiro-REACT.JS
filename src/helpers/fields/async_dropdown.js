@@ -1,4 +1,4 @@
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select, Tooltip } from "@mui/material";
+import { FormControl, FormHelperText, InputLabel, LinearProgress, MenuItem, Select, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { tr } from "../../lang";
 
@@ -15,16 +15,18 @@ const AsyncDropdown = ({ id, label, value, onChange, fetch = () => { } }) => {
         })
     }, [])
 
-    if (loading) return (
-        <FormControl sx={{ m: 1, minWidth: 120, alignItems: 'center' }}>
-            <Tooltip title={`${tr('fetching')} ${label}`}>
-                <CircularProgress disableShrink aria-label="Loading" />
-            </Tooltip>
-        </FormControl>
-    )
+    const LoadingHelper = () => {
+        return (
+            <FormHelperText>
+                <Tooltip title={`${tr('fetching')} ${label}`}>
+                    <LinearProgress aria-label="Loading" />
+                </Tooltip>
+            </FormHelperText>
+        )
+    }
 
     return (
-        <FormControl sx={{ ml: 1, minWidth: 120 }}>
+        <FormControl sx={{ ml: 1, minWidth: 120 }} disabled={loading}>
             <InputLabel id={`field-${id}`}>{label}</InputLabel>
             <Select
                 labelId={`field-${id}`}
@@ -37,6 +39,7 @@ const AsyncDropdown = ({ id, label, value, onChange, fetch = () => { } }) => {
                     return <MenuItem key={value} value={value}>{label}</MenuItem>
                 })}
             </Select>
+            {loading && <LoadingHelper />}
         </FormControl>
     );
 }
