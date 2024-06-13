@@ -1,6 +1,25 @@
-import { createRoot } from "react-dom/client";
-import App from "./App";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { AppImages } from './constants/images';
+import { tr } from './lang';
+import App from './pages/index';
 
-const root = createRoot(document.getElementById("root"));
+// Set the title
+const title = document.getElementById('title');
+title.innerHTML = tr('appName');
 
-root.render(<App />);
+// Set the favicon
+const favicon = document.getElementById('favicon');
+favicon.setAttribute('href', AppImages.favicon);
+
+// Render the app
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </React.StrictMode>
+);
