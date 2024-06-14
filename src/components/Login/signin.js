@@ -130,11 +130,13 @@ const SignInForm = (props) => {
                     margin="dense"
                     sx={{ mt: 2 }}
                 />
-                <FormControlLabel
-                    control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
-                    label={tr('rememberMe')}
-                    sx={{ mt: 1, textAlign: 'left' }}
-                />
+                <Box sx={{ mt: 1, textAlign: 'right' }}>
+                    <FormControlLabel
+                        control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
+                        label={tr('rememberMe')}
+                        sx={{ mt: 1, textAlign: 'left' }}
+                    />
+                </Box>
                 {errors.message && <Alert
                     variant="filled"
                     severity={errors.severity}
