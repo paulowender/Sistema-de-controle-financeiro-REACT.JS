@@ -30,6 +30,12 @@ const AsyncDropdown = ({ id, label, value, onFetch, onChange, fetch = () => { } 
         )
     }
 
+    const handleChange = (e) => {
+        const item = items.find((i) => i.value === e.target.value)
+
+        onChange(item)
+    }
+
     return (
         <FormControl sx={{ ml: 1, minWidth: 120 }} disabled={loading}>
             <InputLabel id={`field-${id}`}>{label}</InputLabel>
@@ -38,7 +44,7 @@ const AsyncDropdown = ({ id, label, value, onFetch, onChange, fetch = () => { } 
                 id={`field-${id}`}
                 value={value || ''}
                 label={label}
-                onChange={e => onChange(e.target.value)}
+                onChange={handleChange}
             >
                 {items.map(({ value, label, prefix }) => (
                     <MenuItem key={value} value={value}>

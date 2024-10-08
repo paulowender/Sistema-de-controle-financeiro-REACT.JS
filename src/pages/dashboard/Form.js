@@ -29,7 +29,12 @@ export default function Form({
 
         setFields(updated)
       }
-      input.value = selected ? selected[input.name] : getValue(input)
+      if (selected) {
+        const value = selected[input.name]
+        input.value = value?.value || value
+      } else {
+        input.value = getValue(input)
+      }
       fields[input.name] = input
     })
 

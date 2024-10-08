@@ -22,8 +22,9 @@ export default function TransactionsList({ transactions, onEdit, onDelete }) {
             <TableCell>{tr('type')}</TableCell>
             <TableCell>{tr('description')}</TableCell>
             <TableCell>{tr('amount')}</TableCell>
-            <TableCell>{tr('date')}</TableCell>
+            <TableCell>{tr('duedate')}</TableCell>
             <TableCell>{tr('category')}</TableCell>
+            <TableCell align="center">{tr('status')}</TableCell>
             <TableCell align="center">{tr('actions')}</TableCell>
           </TableRow>
         </TableHead>

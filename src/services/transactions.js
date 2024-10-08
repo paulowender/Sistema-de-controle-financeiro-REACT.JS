@@ -12,11 +12,12 @@ export class TransactionService {
     }
 
     async add(transaction) {
+        transaction.createdAt = new Date();
         return this.repository.addDoc(this.collection, transaction)
-        .then((docRef) => {
-            transaction.id = docRef.id;
-            return this.repository.setDoc(docRef.path, transaction)
-        })
+            .then((docRef) => {
+                transaction.id = docRef.id;
+                return this.repository.setDoc(docRef.path, transaction)
+            })
     }
 
     async remove(id) {
@@ -24,6 +25,7 @@ export class TransactionService {
     }
 
     async update(newTransaction) {
+        newTransaction.updatedAt = new Date();
         return this.repository.setDoc(`${this.collection}/${newTransaction.id}`, newTransaction)
     }
 }

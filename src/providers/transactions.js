@@ -28,11 +28,11 @@ export const TransactionsProvider = () => {
 
   useEffect(() => {
     const amountExpense = transactions
-      .filter(({ expense, pending }) => expense && !pending)
+      .filter(({ category: { type }, pending, expense }) => (expense || type === 'expense') && !pending)
       .map((transaction) => Number(transaction.amount));
 
     const amountIncome = transactions
-      .filter(({ expense, pending }) => !expense && !pending)
+      .filter(({ category: { type }, pending, expense }) => (!expense || type === 'income') && !pending)
       .map((transaction) => Number(transaction.amount));
 
     const expense = amountExpense.reduce((acc, cur) => acc + cur, 0).toFixed(2);
@@ -78,12 +78,12 @@ export const TransactionsProvider = () => {
       label: tr('category'),
       name: 'category',
       fetch: categoryService.getAll.bind(categoryService),
-      onFetch: (items) => {
-        return items.map((item) => {
+      onFetch: (categories) => {
+        return categories.map((category) => {
           return {
-            ...item,
-            value: item.label,
-            prefix: item.type === 'income' ? <FaRegArrowAltCircleUp color="green" /> : <FaRegArrowAltCircleDown color="red" />
+            ...category,
+            result: category,
+            prefix: category.type === 'income' ? <FaRegArrowAltCircleUp color="green" /> : <FaRegArrowAltCircleDown color="red" />
           }
         })
       },
@@ -94,13 +94,6 @@ export const TransactionsProvider = () => {
       type: 'date',
       label: tr('date'),
       name: 'date'
-    },
-    {
-      id: 'expense',
-      type: 'checkbox',
-      label: tr('expense'),
-      name: 'expense',
-      value: false
     },
     {
       id: 'pending',
